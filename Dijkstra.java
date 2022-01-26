@@ -1,9 +1,9 @@
 import java.util.*;
 /**
  * This class implements the Dijkstra's shortest 
- * path algorithm and analyzes the time complexity
- * of decrease-key function for various complete graphs 
- * of size n
+ * path algorithm and counts the number of times
+ * decrease-key function was performed for various
+ * complete graphs of size n
  */
 public class Dijkstra{
 
@@ -125,12 +125,26 @@ public class Dijkstra{
         }
     }
 
+    /**
+     * Performs the equivalent of decreaseKey in Priority Queue
+     * @param V - current vertex Node
+     * @param tempDistance - smaller distance
+     */
     public void decrease_key(Node V, double tempDistance){
         priorityQueue.remove(V);
         V.dist = tempDistance;
         priorityQueue.add(V);
         this.decreaseKeyCount++;
     }
+
+    /**
+     * Gets the number of times decrease_key method was called
+     * @return - returns decreaseKeyCount
+     */
+    public int getDecreaseKeyCount(){
+        return this.decreaseKeyCount;
+    }
+
 
     /**
      * Prints the shortest path from source to the dest
@@ -160,15 +174,24 @@ public class Dijkstra{
     
     public static void main(String[] args) {
 
-        final int NUM_STEPS = 10;
+        final int NUM_STEPS = 11;
+        int[] decrease_key_count = new int[NUM_STEPS];
+        int[] graphSize = new int[NUM_STEPS];
         Dijkstra d;
-        for(int i=4; i<NUM_STEPS; i++){
+        for(int i=0; i<NUM_STEPS; i++){
             int n = (int)Math.pow(2, i);
             d = new Dijkstra(n, 0);
-            //d.G.printGraph();
             d.shortestPath();
-            //d.printShortestPath(2);
-            System.out.println(d.decreaseKeyCount);
+            decrease_key_count[i] = d.decreaseKeyCount;
+            graphSize[i] = n;
+        }
+
+        for(int i=0; i<NUM_STEPS;i++){
+            System.out.print(graphSize[i] + ", ");
+        }
+        System.out.println();
+        for(int i=0; i<NUM_STEPS;i++){
+            System.out.print(decrease_key_count[i] + ", ");
         }
 
     }
